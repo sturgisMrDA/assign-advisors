@@ -1,11 +1,6 @@
-"""
-Nick Stulsky, Owen Conlon, Marty Toenniessen
+# Imports 
+import csv
 
-This function takes the input of an array of students and their name email etc. and uses
-the student class created by another group to turn each student into an object and add the
-objects to a dictionary which is outputted.
-
-"""
 #Global Variables
 NAME_COLUMN = 0
 EMAIL_COLUMN = 1
@@ -16,6 +11,20 @@ THIRD_CHOICE_COLUMN = 5
 FOURTH_CHOICE_COLUMN = 6
 SAME_ADVISORY_COLUMN = 7
 NEW_TEACHER_COLUMN = 8
+
+students = {}
+advisors = {}
+unassigned_students = []
+
+
+"""
+Nick Stulsky, Owen Conlon, Marty Toenniessen
+
+This function takes the input of an array of students and their name email etc. and uses
+the student class created by another group to turn each student into an object and add the
+objects to a dictionary which is outputted.
+
+"""
 row = 0
 column = 0
 
@@ -23,23 +32,24 @@ column = 0
 #Function
 def convert_array_to_object(array):
     #Turns the student into an object
+    global students
     students = {}
     for row in array:
         student_obj = Student()
-        student_obj.name = row[0] #Meant to take the name column from the thing the other group is doing if that is at all how this works
-        student_obj.email = row[1]# ^ but with email
-        student_obj.grade = row[2] # ^ but with grade
-        student_obj.first_choice = row[3] # ^ but with first choice
-        student_obj.second_choice = row[4] # ^ second choice
-        student_obj.third_choice = row[5] # ^ third
-        student_obj.fourth_choice = row[6] # ^ fourth
-        student_obj.same_advisory = row[7] # ^ but with if they want to stay in the same advisory
-        student_object.new_teacher = row[8] # ^ but if they are willing to have a new teacher
+        student_obj.name = row[NAME_COLUMN] #Meant to take the name column from the thing the other group is doing if that is at all how this works
+        student_obj.email = row[EMAIL_COLUMN]# ^ but with email
+        student_obj.grade = row[GRADE_COLUMN] # ^ but with grade
+        student_obj.first_choice = row[FIRST_CHOICE_COLUMN] # ^ but with first choice
+        student_obj.second_choice = row[SECOND_CHOICE_COLUMN] # ^ second choice
+        student_obj.third_choice = row[THIRD_CHOICE_COLUMN] # ^ third
+        student_obj.fourth_choice = row[FOURTH_CHOICE_COLUMN] # ^ fourth
+        student_obj.same_advisory = row[SAME_ADVISORY_COLUMN] # ^ but with if they want to stay in the same advisory
+        student_object.new_teacher = row[NEW_TEACHER_COLUMN] # ^ but if they are willing to have a new teacher
     
-    #Add the Student name and stuff to the dictionary
+        #Add the Student name and stuff to the dictionary
         students[student_obj.email] = student_obj
 
-        return students
+    return students
 
 def assignment(students):
   """
@@ -55,7 +65,7 @@ def assignment(students):
   while selectedAdvisor < totalChoices:
     currentStudent = 0 #the current student being assinged
     while currentStudent < amountOfStudents: 
-      wantedAdvisor=[students[currentStudent].choices[selectedAdvisor]#sets the name of the advisor that the student wants for their current choice
+      wantedAdvisor=students[currentStudent].choices[selectedAdvisor]#sets the name of the advisor that the student wants for their current choice
       if students[currentStudent].grade == 12:#checks if the current student is a senior
         if len(advisors[wantedAdvisor].seniors) < MAX_SENIORS: #if there are less than the max seniors in the advisory
                      advisors[wantedAdvisor].seniors.insert(students[currentStudent].email) #put into list of students in the current advisor
@@ -77,31 +87,36 @@ def assignment(students):
                      
   return("finished")
 
-"""
-Tristan and Matt.
-Check for anyone who has not filled the form.
-"""
-                     
-big_list = [melon, lemon, watermelon, lime, coconut, orange, apple, cucumber, mango, strawberry, grape]
-small_list = [melon, lemon, watermelon, lime, coconut]
-bad_list = []
+def find_missing_students():
+    """
+    Tristan and Matt.
+    Check for anyone who has not filled the form.
+    """
+                        
+    big_list = [melon, lemon, watermelon, lime, coconut, orange, apple, cucumber, mango, strawberry, grape]
+    small_list = [melon, lemon, watermelon, lime, coconut]
+    bad_list = []
 
-if big_list == small_list:
-    print("Everyone has completed the form!")
+    if big_list == small_list:
+        print("Everyone has completed the form!")
 
-else:
-   for name in big_list:
+    else:
+        for name in big_list:
 
-        if name not in small_list:
-            bad_list.append(name)
+            if name not in small_list:
+                bad_list.append(name)
+    return bad_list
 
-#output by student Mason, Jeanne and Paige.
+
 def student_output():
-    import csv
-    assigned_students = students[].advisor
-    email = assigned_students[]
-    advisor_email = students[email].advisor
-    import csv
+    """
+    output by student Mason, Jeanne and Paige.
+    """
+    
+    #assigned_students = students[].advisor
+    #email = assigned_students[]
+    #advisor_email = students[email].advisor
+    
     with open('studentlist.csv','w',newline=' ') as csvfile:
         studentwiter = csv,writer(csvfile,delimeter =' ',
                                   quotechar = "|", quoting = csv.QUOTE_MINIMAL)
@@ -146,33 +161,55 @@ def sorting(students):
         #Has the freshmen as the last priority, and sorts them accordingly
     return unassigned_students
 
-"""
-Ethan and ...
-output by advisor
-"""
-                     
-import csv
-with open('advisory.csv', 'w', newline='') as csvfile:
-    spamwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    def advisor_list():
+def output_by_advisor():
+    """
+    Ethan and ...
+    output by advisor
+    """             
+    with open('advisory.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        
         fresh = 0
         soph = 0
         jun = 0
         sen = 0
         for ad_email in advisors:
-            Advisor[ad_email].name = ad_name
+            advisors[ad_email].name = ad_name
             spamwriter.writerow([ad_name,'9th grade','10th grade','11th grade','12th grade','students'])
             for stud_email in students:
                 if ad_email == Student[stud_email].advisor:
                     spamwriter.writerow([' ']*5 + [Student[stud_email].name])
-                    if Student[stud_email].grade == 9:
+                    if students[stud_email].grade == 9:
                         fresh = fresh + 1
-                    elif Student[stud_email].grade == 10:
+                    elif students[stud_email].grade == 10:
                         soph = soph + 1
-                    elif Student[stud_email].grade == 11:
+                    elif students[stud_email].grade == 11:
                         jun = jun + 1
-                    elif Student[stud_email].grade == 12:
+                    elif students[stud_email].grade == 12:
                         sen = sen + 1
             spamwriter.writerow([' ', str(fresh), str(soph), str(jun), str(sen)])
+        return
 
+def csv_to_matrix(filename):
+    """
+    Jacob and Stone.
+    The function is to take a CSV file and convert
+    it into a 2D array in Python, in the form of a matrix.
+    """
+    
+    with open(filename,'r')as file_object:
+        reader = csv.reader(file_object)
+        matrix = []
+        for row in reader:
+            matrix.append(row)
+    return matrix
 
+def main():
+    big_data = csv_to_matrix("east_advisory_data.csv")
+    global students
+    students = convert_array_to_object(big_data)
+
+    return
+
+if __name__ == "__main__":
+    main()
